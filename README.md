@@ -1,16 +1,109 @@
-# React + Vite
+# 🗂️ Notice Board Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack **Notice Board Management System** that allows HR/Admin users to create, publish, and manage notices for departments or individual employees. The system supports **Published** and **Draft** notices with dynamic status handling and a clean, professional UI.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📌 Project Overview
 
-## React Compiler
+This project is designed to simplify internal communication within an organization. Admins can:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* Create notices with title, type, target audience, and attachments
+* Publish notices instantly or save them as drafts
+* View all notices in a single table
+* Track notice status (Published / Unpublished)
+* Manage notices from a centralized dashboard
 
-## Expanding the ESLint configuration
+The application follows a **client-server architecture** using React for the frontend and Node.js + Express for the backend, with MongoDB as the database.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* **React** (Vite)
+* **React Router**
+* **Tailwind CSS**
+* **React Icons**
+* **SweetAlert2**
+
+### Backend
+
+* **Node.js**
+* **Express.js**
+* **MongoDB** (MongoDB Atlas)
+* **dotenv**
+* **CORS**
+
+---
+
+## ⚙️ Installation Steps
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone <your-repository-url>
+cd notice-board-project
+```
+
+---
+
+### 2️⃣ Backend Setup
+
+```bash
+cd backend
+npm install
+```
+
+Create a **.env** file in the backend root directory (see ENV section below).
+
+Run the backend server:
+
+```bash
+npm start
+```
+
+Server will run on:
+
+```
+http://localhost:3000
+```
+
+---
+
+### 3️⃣ Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend will run on:
+
+```
+http://localhost:5173
+```
+
+---
+
+## 🔐 Environment Variables (.env)
+
+Create a `.env` file in the **backend root directory** and add the following variables:
+
+```env
+DB_USER=your_mongodb_username
+DB_PASS=your_mongodb_password
+```
+
+🔹 These credentials are used to securely connect to **MongoDB Atlas**.
+
+⚠️ **Important:** Never push the `.env` file to GitHub. Make sure it is included in `.gitignore`.
+
+---
+
+
+
+
+
