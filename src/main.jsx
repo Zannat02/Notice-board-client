@@ -15,8 +15,9 @@ const router = createBrowserRouter([
     Component: MainLayout,
     children:[
        {
-        path: "",        
-        Component: AddNotice
+        path: "", 
+        loader: ()=>  fetch('http://localhost:3000/notices') ,   
+        Component: Home
       },
       {
         path: "notice-board",  
