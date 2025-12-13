@@ -63,7 +63,7 @@ const LeftAside = () => {
                                 setSelectedItem(item.title);
                                
                                   if(item.title === 'Notice Board') {
-                                      navigate('/notice-board'); 
+                                      navigate('/'); 
                                    }
 
                             }}
