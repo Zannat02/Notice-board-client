@@ -65,7 +65,7 @@ const AddNotice = () => {
 
         // send notice data to the db
 
-        fetch('https://notice-board-server.onrender.com/notices', {
+        fetch('http://localhost:3000/notices', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -109,7 +109,7 @@ const AddNotice = () => {
             return;
         }
 
-        fetch('https://notice-board-server.onrender.com/notices', {
+        fetch('http://localhost:3000/notices', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify(newNotice)

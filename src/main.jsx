@@ -16,7 +16,7 @@ const router = createBrowserRouter([
     children:[
        {
         path: "", 
-        loader: ()=>  fetch('https://notice-board-server.onrender.com/notices') ,   
+        loader: ()=>  fetch('http://localhost:3000/notices') ,   
         Component: Home
       },
       {

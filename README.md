@@ -18,6 +18,22 @@ The application follows a **client-server architecture** using React for the fro
 
 ---
 
+- **🔗 Live Website:** [Visit Website](https://notice-board-client.vercel.app/)
+- **💻 Client Repository:** [Client Code](https://github.com/Zannat02/Notice-board-client)
+- **⚙️ Server Repository:** [Server Code](https://github.com/Zannat02/Notice-Board-server)
+
+
+## ✨ Features
+
+- Create, edit, and delete notices
+- Publish notices or save as drafts
+- Manage notices from a centralized dashboard
+- Upload notice attachments
+- Dynamic notice status (Published / Draft)
+- REST API integration
+- MongoDB Atlas database
+
+
 ## 🛠️ Tech Stack
 
 ### Frontend
@@ -38,13 +54,20 @@ The application follows a **client-server architecture** using React for the fro
 
 ---
 
+
 ## ⚙️ Installation Steps
 
 ### 1️⃣ Clone the Repository
+### Client
 
 ```bash
-git clone <your-repository-url>
-cd notice-board-project
+git clone https://github.com/Zannat02/Notice-board-client.git
+```
+
+### Server
+
+```bash
+git clone https://github.com/Zannat02/Notice-Board-server.git
 ```
 
 ---
