@@ -1,5 +1,5 @@
 const API_URL = import.meta.env.DEV
     ? 'http://localhost:3000'
-    : 'https://notice-board-server.onrender.com/';
+    : 'https://notice-board-server.onrender.com';
 
 export default API_URL;
