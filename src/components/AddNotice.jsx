@@ -4,6 +4,7 @@ import { FiChevronLeft } from 'react-icons/fi';
 import { IoCloudUploadOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
+import API_URL from '../config';
 
 const AddNotice = () => {
     const [targetOpen, setTargetOpen] = useState(false);
@@ -65,7 +66,7 @@ const AddNotice = () => {
 
         // send notice data to the db
 
-        fetch('http://localhost:3000/notices', {
+        fetch(`${API_URL}/notices`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -109,7 +110,7 @@ const AddNotice = () => {
             return;
         }
 
-        fetch('http://localhost:3000/notices', {
+        fetch(`${API_URL}/notices`, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify(newNotice)
