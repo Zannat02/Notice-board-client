@@ -1,6 +1,6 @@
 # 🗂️ Notice Board Management System
 
-A full-stack **Notice Board Management System** that allows HR/Admin users to create, publish, and manage notices for departments or individual employees. The system supports **Published** and **Draft** notices with dynamic status handling and a clean, professional UI.
+This is the frontend client for the Notice Board Management System — a full-stack application that allows HR/Admin users to create, publish, and manage notices for departments or individual employees, with a clean and professional UI.
 
 ---
 
@@ -32,6 +32,8 @@ The application follows a **client-server architecture** using React for the fro
 - Dynamic notice status (Published / Draft)
 - REST API integration
 - MongoDB Atlas database
+- Active vs Draft notice count on the dashboard
+- Fully responsive UI — optimized layouts for Mobile, Tablet, and Desktop (collapsible sidebar drawer with hamburger menu on smaller screens, card view for tables on mobile/tablet)
 
 
 ## 🛠️ Tech Stack

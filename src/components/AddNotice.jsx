@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaChevronDown, FaCheck } from 'react-icons/fa';
 import { FiChevronLeft } from 'react-icons/fi';
 import { IoCloudUploadOutline } from 'react-icons/io5';
@@ -15,9 +15,12 @@ const AddNotice = () => {
     const [noticeTypeValue, setNoticeTypeValue] = useState([]);
     const [publishDate, setPublishDate] = useState('');
     const [uploadedFile, setUploadedFile] = useState(null);
-     const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const formRef = useRef(null);
+    const targetRef = useRef(null);
+    const designationRef = useRef(null);
+    const noticeTypeRef = useRef(null);
 
     const targetOptions = ['All Department', 'Individual'];
     const designationOptions = ['Manager', 'Developer', 'Designer', 'HR'];
@@ -31,6 +34,24 @@ const AddNotice = () => {
         'Advisory / Personal Reminder'
     ];
 
+    // Close dropdowns when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (targetRef.current && !targetRef.current.contains(event.target)) {
+                setTargetOpen(false);
+            }
+            if (designationRef.current && !designationRef.current.contains(event.target)) {
+                setDesignationOpen(false);
+            }
+            if (noticeTypeRef.current && !noticeTypeRef.current.contains(event.target)) {
+                setNoticeTypeOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
     const toggleNoticeType = (option) => {
         if (noticeTypeValue.includes(option)) {
             setNoticeTypeValue(noticeTypeValue.filter(item => item !== option));
@@ -39,20 +60,16 @@ const AddNotice = () => {
         }
     };
 
-
     const handlePublish = (e) => {
         e.preventDefault();
         const form = formRef.current;
         const formData = new FormData(form);
 
-
         formData.set('Notice Type', noticeTypeValue.join(', '));
         formData.set('Uploaded File', uploadedFile ? uploadedFile.name : '');
         formData.set('status', 'Published');
 
-
         const newNotice = Object.fromEntries(formData.entries());
-
 
         const requiredFields = ['Target', 'Designation', 'EmployeeName', 'Position', 'NoticeTitle', 'Notice Type', 'PublishDate', 'NoticeBody'];
         const emptyFields = requiredFields.filter(field => !newNotice[field] || newNotice[field].trim() === '');
@@ -63,8 +80,6 @@ const AddNotice = () => {
         }
 
         console.log('Form Data:', newNotice);
-
-        // send notice data to the db
 
         fetch(`${API_URL}/notices`, {
             method: 'POST',
@@ -90,7 +105,6 @@ const AddNotice = () => {
             })
     };
 
-    // Save as Draft handler
     const handleSaveDraft = (e) => {
         e.preventDefault();
         const form = formRef.current;
@@ -98,7 +112,7 @@ const AddNotice = () => {
 
         formData.set('Notice Type', noticeTypeValue.join(', '));
         formData.set('Uploaded File', uploadedFile ? uploadedFile.name : '');
-        formData.set('status', 'Unpublished'); 
+        formData.set('status', 'Unpublished');
 
         const newNotice = Object.fromEntries(formData.entries());
 
@@ -128,9 +142,8 @@ const AddNotice = () => {
             });
     };
 
-
     return (
-        <div className="p-6">
+        <div className="p-3 md:p-6">
 
             <div className="flex items-center space-x-3 mb-6">
                 <div
@@ -139,20 +152,19 @@ const AddNotice = () => {
                 >
                     <FiChevronLeft className="text-gray-700" />
                 </div>
-                <h2 className="text-xl font-bold">Create a Notice</h2>
+                <h2 className="text-lg md:text-xl font-bold">Create a Notice</h2>
             </div>
 
-
-            <form ref={formRef} className='bg-white border border-gray-300 rounded-2xl overflow-hidden'>
-                <div className="bg-gray-100 p-4 rounded">
+            <form ref={formRef} className='bg-white border border-gray-300 rounded-2xl'>
+                <div className="bg-gray-100 p-4 rounded-t-2xl">
                     <p className="text-gray-700 font-medium mb-2">
                         Please fill in the details below
                     </p>
                 </div>
                 <hr className="border-gray-300" />
 
-
-                <div className="bg-gray-100 p-4 m-6 rounded-xl relative">
+                {/* Target */}
+                <div ref={targetRef} className="bg-gray-100 p-4 m-3 md:m-6 rounded-xl relative isolate z-30">
                     <label className="font-medium mb-2 block">
                         <span className="text-red-500">*</span> Target Department(s) or Individual
                     </label>
@@ -168,11 +180,11 @@ const AddNotice = () => {
                         />
                         <FaChevronDown className="absolute right-2 top-2.5 text-gray-700" />
                         {targetOpen && (
-                            <ul className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 rounded shadow z-10">
+                            <ul className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 rounded shadow-xl z-50">
                                 {targetOptions.map((opt, idx) => (
                                     <li
                                         key={idx}
-                                        className="p-2 cursor-pointer hover:bg-gray-100"
+                                        className="p-2 cursor-pointer hover:bg-gray-100 bg-white"
                                         onClick={() => {
                                             setTargetValue(opt);
                                             setTargetOpen(false);
@@ -186,8 +198,7 @@ const AddNotice = () => {
                     </div>
                 </div>
 
-              
-                <div className="m-6 space-y-6">
+                <div className="m-3 md:m-6 space-y-6">
                     <div>
                         <label className="font-medium mb-2 block">
                             <span className="text-red-500">*</span> Notice Title
@@ -200,8 +211,9 @@ const AddNotice = () => {
                         />
                     </div>
 
-                    <div className="flex gap-4">
-                        <div className="flex-1 relative">
+                    {/* Designation / Employee Name / Position */}
+                    <div className="flex flex-col sm:flex-row gap-4">
+                        <div ref={designationRef} className="flex-1 relative isolate z-20">
                             <label className="font-medium mb-2 block">
                                 <span className="text-red-500">*</span> Select Employee ID
                             </label>
@@ -217,11 +229,11 @@ const AddNotice = () => {
                                 />
                                 <FaChevronDown className="absolute right-2 top-2.5 text-gray-700" />
                                 {designationOpen && (
-                                    <ul className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 rounded shadow z-10">
+                                    <ul className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 rounded shadow-xl z-50">
                                         {designationOptions.map((opt, idx) => (
                                             <li
                                                 key={idx}
-                                                className="p-2 cursor-pointer hover:bg-gray-100"
+                                                className="p-2 cursor-pointer hover:bg-gray-100 bg-white"
                                                 onClick={() => {
                                                     setDesignationValue(opt);
                                                     setDesignationOpen(false);
@@ -260,9 +272,9 @@ const AddNotice = () => {
                         </div>
                     </div>
 
-                   
-                    <div className="flex gap-4">
-                        <div className="flex-1 relative">
+                    {/* Notice Type / Publish Date */}
+                    <div className="flex flex-col sm:flex-row gap-4">
+                        <div ref={noticeTypeRef} className="flex-1 relative isolate z-20">
                             <label className="font-medium mb-2 block">
                                 <span className="text-red-500">*</span> Notice Type
                             </label>
@@ -278,11 +290,11 @@ const AddNotice = () => {
                                 />
                                 <FaChevronDown className="absolute right-2 top-2.5 text-gray-700" />
                                 {noticeTypeOpen && (
-                                    <ul className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 rounded shadow z-10 max-h-48 overflow-y-auto">
+                                    <ul className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 rounded shadow-xl z-50 max-h-48 overflow-y-auto">
                                         {noticeTypeOptions.map((opt, idx) => (
                                             <li
                                                 key={idx}
-                                                className="p-2 cursor-pointer hover:bg-gray-100 flex items-center"
+                                                className="p-2 cursor-pointer hover:bg-gray-100 bg-white flex items-center"
                                                 onClick={() => toggleNoticeType(opt)}
                                             >
                                                 <input
@@ -323,10 +335,9 @@ const AddNotice = () => {
                         ></textarea>
                     </div>
 
-                    
                     <div>
                         <p className="font-medium mb-2">Upload Attachments (optional)</p>
-                        <label className="border-2 border-dashed border-green-500 rounded-2xl p-8 flex flex-col items-center justify-center text-center cursor-pointer">
+                        <label className="border-2 border-dashed border-green-500 rounded-2xl p-5 md:p-8 flex flex-col items-center justify-center text-center cursor-pointer">
                             <IoCloudUploadOutline className="text-4xl text-green-500 mb-2" />
                             <p>
                                 <span className="text-green-600 font-medium">Upload</span> nominee profile image or drag and drop
@@ -343,7 +354,7 @@ const AddNotice = () => {
 
                         {uploadedFile && (
                             <div className="mt-3 inline-flex items-center gap-3 bg-gray-100 px-4 py-2 rounded-lg">
-                                <p className="text-sm">
+                                <p className="text-sm truncate max-w-[200px]">
                                     📎 <span className="font-medium">{uploadedFile.name}</span>
                                 </p>
                                 <button
@@ -358,21 +369,21 @@ const AddNotice = () => {
                 </div>
 
                 {/* Buttons */}
-                <div className="flex justify-end gap-4 m-8">
-                    <button className="px-6 py-2 rounded-2xl border border-gray-300 text-black hover:bg-gray-50">
+                <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 m-4 md:m-8">
+                    <button className="px-6 py-2 rounded-2xl border border-gray-300 text-black hover:bg-gray-50 order-3 sm:order-1">
                         Cancel
                     </button>
                     <button
                         type="submit"
-                        onClick={handleSaveDraft}  
-                        className="px-6 py-2 rounded-2xl border border-sky-500 text-sky-500 hover:bg-sky-50"
+                        onClick={handleSaveDraft}
+                        className="px-6 py-2 rounded-2xl border border-sky-500 text-sky-500 hover:bg-sky-50 order-2"
                     >
                         Save as Draft
                     </button>
                     <button
                         type="submit"
                         onClick={handlePublish}
-                        className="px-6 py-2 rounded-2xl flex items-center gap-2 bg-[#F95524] text-white hover:opacity-90"
+                        className="px-6 py-2 rounded-2xl flex items-center justify-center gap-2 bg-[#F95524] text-white hover:opacity-90 order-1 sm:order-3"
                     >
                         <FaCheck /> Publish Notice
                     </button>
@@ -383,4 +394,3 @@ const AddNotice = () => {
 };
 
 export default AddNotice;
-

@@ -7,6 +7,7 @@ import { RouterProvider } from "react-router/dom";
 import MainLayout from './layout/MainLayout.jsx';
 import Home from './Pages/Home.jsx';
 import AddNotice from './components/AddNotice.jsx';
+import DraftNotices from './Pages/DraftNotices.jsx';
 import API_URL from './config.js';
 
 
@@ -23,6 +24,11 @@ const router = createBrowserRouter([
       {
         path: "notice-board",  
         Component: AddNotice
+      },
+      {
+        path: "draft-notices",
+        loader: () => fetch(`${API_URL}/notices`),
+        Component: DraftNotices
       }
     ]
   },
