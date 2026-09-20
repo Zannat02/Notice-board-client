@@ -15,7 +15,7 @@ const Home = () => {
             <div className='flex flex-col gap-4 md:flex-row md:justify-between md:items-center mb-6'>
 
                 <div>
-                    <h2 className='text-xl md:text-2xl font-bold mb-2'>Notice Management</h2>
+                    <h2 className='text-xl md:text-2xl font-bold text-gray-900'>Notice Management</h2>
                     <div className='flex flex-wrap gap-2 md:gap-4'>
                         <p className='text-gray-600 text-sm md:text-base'>Active Notices: {activeCount}</p>
                         <p className='text-gray-600 text-sm md:text-base'>Draft Notices: {draftCount}</p>

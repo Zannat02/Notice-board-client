@@ -19,7 +19,7 @@ const Header = ({ onMenuClick }) => {
                 </button>
 
                 <div className="flex flex-col justify-center">
-                    <h2 className="text-base md:text-lg font-semibold">Good Afternoon Asif</h2>
+                    <h2 className="text-base md:text-lg font-semibold text-gray-900">Good Afternoon Asif</h2>
                     <p className="text-xs md:text-sm text-gray-500">
                         {format(new Date(), " dd MMMM  , yyyy")}
                     </p>

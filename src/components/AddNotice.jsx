@@ -152,7 +152,7 @@ const AddNotice = () => {
                 >
                     <FiChevronLeft className="text-gray-700" />
                 </div>
-                <h2 className="text-lg md:text-xl font-bold">Create a Notice</h2>
+                <h2 className="text-lg md:text-xl font-bold text-gray-900">Create a Notice</h2>
             </div>
 
             <form ref={formRef} className='bg-white border border-gray-300 rounded-2xl'>
@@ -165,7 +165,7 @@ const AddNotice = () => {
 
                 {/* Target */}
                 <div ref={targetRef} className="bg-gray-100 p-4 m-3 md:m-6 rounded-xl relative isolate z-30">
-                    <label className="font-medium mb-2 block">
+                    <label className="font-medium mb-2 block text-gray-900">
                         <span className="text-red-500">*</span> Target Department(s) or Individual
                     </label>
                     <div className="relative">
@@ -176,7 +176,7 @@ const AddNotice = () => {
                             value={targetValue}
                             onClick={() => setTargetOpen(!targetOpen)}
                             placeholder="Select target"
-                            className="w-full bg-gray-100 border border-slate-200 p-2 rounded pl-8 cursor-pointer"
+                            className="w-full bg-white border border-slate-300 p-2 rounded pl-8 cursor-pointer text-gray-900 placeholder-gray-400"
                         />
                         <FaChevronDown className="absolute right-2 top-2.5 text-gray-700" />
                         {targetOpen && (
@@ -184,7 +184,7 @@ const AddNotice = () => {
                                 {targetOptions.map((opt, idx) => (
                                     <li
                                         key={idx}
-                                        className="p-2 cursor-pointer hover:bg-gray-100 bg-white"
+                                        className="p-2 cursor-pointer hover:bg-gray-100 bg-white text-gray-900"
                                         onClick={() => {
                                             setTargetValue(opt);
                                             setTargetOpen(false);
@@ -200,21 +200,21 @@ const AddNotice = () => {
 
                 <div className="m-3 md:m-6 space-y-6">
                     <div>
-                        <label className="font-medium mb-2 block">
+                        <label className="font-medium mb-2 block text-gray-900">
                             <span className="text-red-500">*</span> Notice Title
                         </label>
                         <input
                             name="NoticeTitle"
                             type="text"
                             placeholder="Notice Title"
-                            className="w-full border border-gray-100 p-2 rounded"
+                            className="w-full border border-gray-300 p-2 rounded text-gray-900 placeholder-gray-400 bg-white"
                         />
                     </div>
 
                     {/* Designation / Employee Name / Position */}
                     <div className="flex flex-col sm:flex-row gap-4">
                         <div ref={designationRef} className="flex-1 relative isolate z-20">
-                            <label className="font-medium mb-2 block">
+                            <label className="font-medium mb-2 block text-gray-900">
                                 <span className="text-red-500">*</span> Select Employee ID
                             </label>
                             <div className="relative">
@@ -225,7 +225,7 @@ const AddNotice = () => {
                                     value={designationValue}
                                     onClick={() => setDesignationOpen(!designationOpen)}
                                     placeholder="Select employee designation"
-                                    className="w-full border border-gray-100 p-2 rounded cursor-pointer"
+                                    className="w-full border border-gray-300 p-2 rounded cursor-pointer text-gray-900 placeholder-gray-400 bg-white"
                                 />
                                 <FaChevronDown className="absolute right-2 top-2.5 text-gray-700" />
                                 {designationOpen && (
@@ -233,7 +233,7 @@ const AddNotice = () => {
                                         {designationOptions.map((opt, idx) => (
                                             <li
                                                 key={idx}
-                                                className="p-2 cursor-pointer hover:bg-gray-100 bg-white"
+                                                className="p-2 cursor-pointer hover:bg-gray-100 bg-white text-gray-900"
                                                 onClick={() => {
                                                     setDesignationValue(opt);
                                                     setDesignationOpen(false);
@@ -248,26 +248,26 @@ const AddNotice = () => {
                         </div>
 
                         <div className="flex-1">
-                            <label className="font-medium mb-2 block">
+                            <label className="font-medium mb-2 block text-gray-900">
                                 <span className="text-red-500">*</span> Employee Name
                             </label>
                             <input
                                 name="EmployeeName"
                                 type="text"
                                 placeholder="Employee Name"
-                                className="w-full border border-gray-100 p-2 rounded"
+                                className="w-full border border-gray-300 p-2 rounded text-gray-900 placeholder-gray-400 bg-white"
                             />
                         </div>
 
                         <div className="flex-1">
-                            <label className="font-medium mb-2 block">
+                            <label className="font-medium mb-2 block text-gray-900">
                                 <span className="text-red-500">*</span> Position
                             </label>
                             <input
                                 name="Position"
                                 type="text"
                                 placeholder="Position"
-                                className="w-full border border-gray-100 p-2 rounded"
+                                className="w-full border border-gray-300 p-2 rounded text-gray-900 placeholder-gray-400 bg-white"
                             />
                         </div>
                     </div>
@@ -275,7 +275,7 @@ const AddNotice = () => {
                     {/* Notice Type / Publish Date */}
                     <div className="flex flex-col sm:flex-row gap-4">
                         <div ref={noticeTypeRef} className="flex-1 relative isolate z-20">
-                            <label className="font-medium mb-2 block">
+                            <label className="font-medium mb-2 block text-gray-900">
                                 <span className="text-red-500">*</span> Notice Type
                             </label>
                             <div className="relative">
@@ -286,7 +286,7 @@ const AddNotice = () => {
                                     value={noticeTypeValue.join(', ')}
                                     onClick={() => setNoticeTypeOpen(!noticeTypeOpen)}
                                     placeholder="Select Notice Type"
-                                    className="w-full border border-gray-100 p-2 rounded cursor-pointer"
+                                    className="w-full border border-gray-300 p-2 rounded cursor-pointer text-gray-900 placeholder-gray-400 bg-white"
                                 />
                                 <FaChevronDown className="absolute right-2 top-2.5 text-gray-700" />
                                 {noticeTypeOpen && (
@@ -294,7 +294,7 @@ const AddNotice = () => {
                                         {noticeTypeOptions.map((opt, idx) => (
                                             <li
                                                 key={idx}
-                                                className="p-2 cursor-pointer hover:bg-gray-100 bg-white flex items-center"
+                                                className="p-2 cursor-pointer hover:bg-gray-100 bg-white text-gray-900 flex items-center"
                                                 onClick={() => toggleNoticeType(opt)}
                                             >
                                                 <input
@@ -312,7 +312,7 @@ const AddNotice = () => {
                         </div>
 
                         <div className="flex-1">
-                            <label className="font-medium mb-2 block">
+                            <label className="font-medium mb-2 block text-gray-900">
                                 <span className="text-red-500">*</span> Publish Date
                             </label>
                             <input
@@ -320,26 +320,26 @@ const AddNotice = () => {
                                 type="date"
                                 value={publishDate}
                                 onChange={(e) => setPublishDate(e.target.value)}
-                                className="w-full border border-gray-100 p-2 rounded cursor-pointer"
+                                className="w-full border border-gray-300 p-2 rounded cursor-pointer text-gray-900 bg-white"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className="font-medium mb-2 block">Notice Body</label>
+                        <label className="font-medium mb-2 block text-gray-900">Notice Body</label>
                         <textarea
                             name="NoticeBody"
                             rows="5"
                             placeholder="Write the details about notice"
-                            className="w-full border border-gray-100 p-3 rounded resize-none"
+                            className="w-full border border-gray-300 p-3 rounded resize-none text-gray-900 placeholder-gray-400 bg-white"
                         ></textarea>
                     </div>
 
                     <div>
-                        <p className="font-medium mb-2">Upload Attachments (optional)</p>
-                        <label className="border-2 border-dashed border-green-500 rounded-2xl p-5 md:p-8 flex flex-col items-center justify-center text-center cursor-pointer">
+                        <p className="font-medium mb-2 text-gray-900">Upload Attachments (optional)</p>
+                        <label className="border-2 border-dashed border-green-500 rounded-2xl p-5 md:p-8 flex flex-col items-center justify-center text-center cursor-pointer bg-white">
                             <IoCloudUploadOutline className="text-4xl text-green-500 mb-2" />
-                            <p>
+                            <p className="text-gray-900">
                                 <span className="text-green-600 font-medium">Upload</span> nominee profile image or drag and drop
                             </p>
                             <p className="text-sm text-gray-500">Accepted File Type: jpg, png</p>
@@ -354,7 +354,7 @@ const AddNotice = () => {
 
                         {uploadedFile && (
                             <div className="mt-3 inline-flex items-center gap-3 bg-gray-100 px-4 py-2 rounded-lg">
-                                <p className="text-sm truncate max-w-[200px]">
+                                <p className="text-sm truncate max-w-[200px] text-gray-900">
                                     📎 <span className="font-medium">{uploadedFile.name}</span>
                                 </p>
                                 <button
@@ -370,13 +370,13 @@ const AddNotice = () => {
 
                 {/* Buttons */}
                 <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 m-4 md:m-8">
-                    <button className="px-6 py-2 rounded-2xl border border-gray-300 text-black hover:bg-gray-50 order-3 sm:order-1">
+                    <button className="px-6 py-2 rounded-2xl border border-gray-300 text-black hover:bg-gray-50 order-3 sm:order-1 bg-white">
                         Cancel
                     </button>
                     <button
                         type="submit"
                         onClick={handleSaveDraft}
-                        className="px-6 py-2 rounded-2xl border border-sky-500 text-sky-500 hover:bg-sky-50 order-2"
+                        className="px-6 py-2 rounded-2xl border border-sky-500 text-sky-500 hover:bg-sky-50 order-2 bg-white"
                     >
                         Save as Draft
                     </button>

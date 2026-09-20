@@ -20,7 +20,7 @@ const DraftNotices = () => {
                     <FiChevronLeft className="text-gray-700" />
                 </div>
                 <div>
-                    <h2 className='text-xl md:text-2xl font-bold'>All Draft Notices</h2>
+                    <h2 className='text-xl md:text-2xl font-bold text-gray-900'>All Draft Notices</h2>
                     <p className='text-gray-600 text-sm md:text-base'>
                         Total Drafts: {draftNotices.length}
                     </p>
