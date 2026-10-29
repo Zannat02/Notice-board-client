@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import { createBrowserRouter, isRouteErrorResponse, Link, useRouteError } from "react-router";
@@ -7,6 +7,7 @@ import MainLayout from './layout/MainLayout.jsx';
 import Home from './Pages/Home.jsx';
 import AddNotice from './components/AddNotice.jsx';
 import DraftNotices from './Pages/DraftNotices.jsx';
+import PageSkeleton from './components/PageSkeleton.jsx';
 import API_URL from './config.js';
 
 
@@ -28,17 +29,52 @@ const fetchNotice = async ({ params }) => {
 };
 
 
+const LoadingScreen = () => {
+  const [slow, setSlow] = useState(false);
 
-const LoadingScreen = () => (
-  <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-gray-100 text-gray-700">
-    <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-orange-600"></div>
-    <p>Loading...</p>
-    <p className="px-4 text-center text-sm text-gray-500">
-      The server may take a little while to wake up on the first visit.
-    </p>
-  </div>
-);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setSlow(true), 4000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const variant = window.location.pathname.startsWith('/notice-board') ? 'form' : 'list';
+
+  return (
+    <div className="grid min-h-screen grid-cols-12">
+      <aside className="hidden animate-pulse bg-white p-4 motion-reduce:animate-none lg:col-span-2 lg:block">
+        <div className="mb-6 mt-5 h-8 w-32 rounded bg-gray-200" />
+        <div className="space-y-3">
+          {Array.from({ length: 9 }).map((_, index) => (
+            <div key={index} className="h-8 rounded bg-gray-200" />
+          ))}
+        </div>
+      </aside>
+
+      <section className="col-span-12 flex min-h-screen flex-col lg:col-span-10">
+        <div className="flex h-16 shrink-0 animate-pulse items-center justify-between bg-white px-4 shadow motion-reduce:animate-none md:px-6">
+          <div className="space-y-2">
+            <div className="h-4 w-40 rounded bg-gray-200" />
+            <div className="h-3 w-28 rounded bg-gray-200" />
+          </div>
+          <div className="h-10 w-10 rounded-full bg-gray-200" />
+        </div>
+
+        <div className="flex-1 bg-gray-100 p-4 md:p-6">
+          {slow && (
+            <p
+              aria-live="polite"
+              className="mb-4 rounded border border-orange-200 bg-orange-50 p-3 text-sm text-orange-800"
+            >
+              The server is waking up after being idle. This can take up to a minute on the first visit, please wait.
+            </p>
+          )}
+          <PageSkeleton variant={variant} />
+        </div>
+      </section>
+    </div>
+  );
+};
 
 const ErrorPage = () => {
   const error = useRouteError();
@@ -63,10 +99,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     Component: MainLayout,
-      HydrateFallback: LoadingScreen,
+    HydrateFallback: LoadingScreen,
     children: [
       {
-        // Pathless route: errors show inside the layout, so the header and sidebar stay
+      
         ErrorBoundary: ErrorPage,
         children: [
           {

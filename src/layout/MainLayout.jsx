@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router';
+import { Outlet, useNavigation } from 'react-router';
 import { FiX } from 'react-icons/fi';
 import Header from '../components/Header';
 import LeftAside from '../components/LeftAside';
+import PageSkeleton from '../components/PageSkeleton';
 
 const MainLayout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    
+    const navigation = useNavigation();
+    const isLoading = navigation.state === 'loading';
+    const nextPath = navigation.location?.pathname || '';
+    const skeletonVariant = nextPath.startsWith('/notice-board') ? 'form' : 'list';
 
     return (
         <div className="grid grid-cols-12 min-h-screen relative">
@@ -45,7 +52,7 @@ const MainLayout = () => {
                 </div>
 
                 <div className="flex-1 p-4 md:p-6 bg-gray-100">
-                    <Outlet />
+                    {isLoading ? <PageSkeleton variant={skeletonVariant} /> : <Outlet />}
                 </div>
 
             </section>
