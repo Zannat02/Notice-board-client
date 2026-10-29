@@ -1,44 +1,72 @@
 import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router';
 import Icon from '../assets/icon.png';
-import { FaChevronDown } from 'react-icons/fa';
-import { FaTachometerAlt, FaUser, FaMoneyCheckAlt, FaFileInvoiceDollar, FaCalendarCheck, FaInbox, FaBriefcase, FaFolderOpen, FaBell, FaClipboardList, FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
-import { useNavigate } from 'react-router';
+import {
+    FaChevronDown,
+    FaTachometerAlt,
+    FaUser,
+    FaMoneyCheckAlt,
+    FaFileInvoiceDollar,
+    FaCalendarCheck,
+    FaInbox,
+    FaBriefcase,
+    FaFolderOpen,
+    FaBell,
+    FaClipboardList,
+    FaSignOutAlt,
+    FaUserCircle
+} from 'react-icons/fa';
+
+// Every notice page (list, create, edit, drafts) belongs to the "Notice Board" menu item
+const NOTICE_ROUTES = ['/notice-board', '/draft-notices'];
+
+const isNoticePage = (pathname) =>
+    pathname === '/' ||
+    NOTICE_ROUTES.some((route) => pathname === route || pathname.startsWith(`${route}/`));
+
+// "to" = the item opens a real page. Items without "to" have no page yet.
+const menuItems = [
+    { title: 'Dashboard', icon: <FaTachometerAlt /> },
+    {
+        title: 'Employee',
+        icon: <FaUser />,
+        dropdown: ['Employee List', 'Add Employee', 'Departments', 'Roles']
+    },
+    { title: 'Payroll', icon: <FaMoneyCheckAlt /> },
+    { title: 'Pay Slip', icon: <FaFileInvoiceDollar /> },
+    { title: 'Attendance', icon: <FaCalendarCheck /> },
+    { title: 'Request Center', icon: <FaInbox /> },
+    {
+        title: 'Career Database',
+        icon: <FaBriefcase />,
+        dropdown: ['Open Positions', 'Applications', 'Interviews', 'Hired']
+    },
+    { title: 'Document Manager', icon: <FaFolderOpen /> },
+    { title: 'Notice Board', icon: <FaBell />, to: '/', isActive: isNoticePage },
+    { title: 'Activity Log', icon: <FaClipboardList /> },
+    { title: 'Exit Interview', icon: <FaSignOutAlt /> },
+    { title: 'Profile', icon: <FaUserCircle /> }
+];
+
+const rowClass = (active) =>
+    `flex w-full justify-between items-center p-2 text-left cursor-pointer rounded hover:bg-gray-100 ${
+        active ? 'bg-gray-100 border-r-4 border-orange-500' : ''
+    }`;
 
 const LeftAside = ({ onNavigate }) => {
     const [openDropdown, setOpenDropdown] = useState(null);
-    const [selectedItem, setSelectedItem] = useState(null);
-    const navigate = useNavigate();
-
-    const menuItems = [
-        { title: 'Dashboard', icon: <FaTachometerAlt /> },
-        {
-            title: 'Employee',
-            icon: <FaUser />,
-            dropdown: ['Employee List', 'Add Employee', 'Departments', 'Roles']
-        },
-        { title: 'Payroll', icon: <FaMoneyCheckAlt /> },
-        { title: 'Pay Slip', icon: <FaFileInvoiceDollar /> },
-        { title: 'Attendance', icon: <FaCalendarCheck /> },
-        { title: 'Request Center', icon: <FaInbox /> },
-        {
-            title: 'Career Database',
-            icon: <FaBriefcase />,
-            dropdown: ['Open Positions', 'Applications', 'Interviews', 'Hired']
-        },
-        { title: 'Document Manager', icon: <FaFolderOpen /> },
-        { title: 'Notice Board', icon: <FaBell /> },
-        { title: 'Activity Log', icon: <FaClipboardList /> },
-        { title: 'Exit Interview', icon: <FaSignOutAlt /> },
-        { title: 'Profile', icon: <FaUserCircle /> }
-    ];
+    const { pathname } = useLocation();
 
     const toggleDropdown = (title) => {
-        if (openDropdown === title) {
-            setOpenDropdown(null);
-        } else {
-            setOpenDropdown(title);
-        }
-    }
+        setOpenDropdown((current) => (current === title ? null : title));
+    };
+
+    const label = (item) => (
+        <span className='flex items-center space-x-2'>
+            <span>{item.icon}</span>
+            <span>{item.title}</span>
+        </span>
+    );
 
     return (
         <div className='text-black p-4'>
@@ -49,49 +77,59 @@ const LeftAside = ({ onNavigate }) => {
             </div>
 
             <ul className='space-y-2'>
-                {menuItems.map((item, index) => (
-                    <li key={index}>
-                        <div
-                            className={`flex justify-between items-center p-2 cursor-pointer rounded 
-                                hover:bg-gray-100 
-                                ${selectedItem === item.title ? 'bg-gray-100 border-r-4 border-orange-500' : ''}`}
-                            onClick={() => {
-                                setSelectedItem(item.title);
+                {menuItems.map((item) => {
+                    const active = item.to ? item.isActive(pathname) : false;
 
-                                if (item.dropdown) {
-                                    // Dropdown item — just toggle, keep drawer open on mobile
-                                    toggleDropdown(item.title);
-                                    return;
-                                }
-
-                                if (item.title === 'Notice Board') {
-                                    navigate('/');
-                                }
-
-                                // Only close the mobile drawer when it's an actual navigation item
-                                if (onNavigate) onNavigate();
-                            }}
-                        >
-                            <div className='flex items-center space-x-2'>
-                                <span>{item.icon}</span>
-                                <span>{item.title}</span>
-                            </div>
-                            {item.dropdown && (
-                                <FaChevronDown className={`transition-transform duration-200 ${openDropdown === item.title ? 'rotate-180' : 'rotate-0'}`} />
+                    return (
+                        <li key={item.title}>
+                            {item.dropdown ? (
+                                // Dropdown item: just toggle, keep the drawer open on mobile
+                                <button
+                                    type='button'
+                                    aria-expanded={openDropdown === item.title}
+                                    className={rowClass(false)}
+                                    onClick={() => toggleDropdown(item.title)}
+                                >
+                                    {label(item)}
+                                    <FaChevronDown
+                                        className={`transition-transform duration-200 ${
+                                            openDropdown === item.title ? 'rotate-180' : 'rotate-0'
+                                        }`}
+                                    />
+                                </button>
+                            ) : item.to ? (
+                                // Real page: the highlight comes from the URL
+                                <Link
+                                    to={item.to}
+                                    aria-current={active ? 'page' : undefined}
+                                    className={rowClass(active)}
+                                    onClick={() => onNavigate && onNavigate()}
+                                >
+                                    {label(item)}
+                                </Link>
+                            ) : (
+                                // No page for this item yet
+                                <button
+                                    type='button'
+                                    className={rowClass(false)}
+                                    onClick={() => onNavigate && onNavigate()}
+                                >
+                                    {label(item)}
+                                </button>
                             )}
-                        </div>
 
-                        {item.dropdown && openDropdown === item.title && (
-                            <ul className='pl-8 mt-1 space-y-1 bg-slate-100'>
-                                {item.dropdown.map((subItem, subIndex) => (
-                                    <li key={subIndex} className='p-1 cursor-pointer rounded'>
-                                        {subItem}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </li>
-                ))}
+                            {item.dropdown && openDropdown === item.title && (
+                                <ul className='pl-8 mt-1 space-y-1 bg-slate-100'>
+                                    {item.dropdown.map((subItem) => (
+                                        <li key={subItem} className='p-1 cursor-pointer rounded'>
+                                            {subItem}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </li>
+                    );
+                })}
             </ul>
         </div>
     );
