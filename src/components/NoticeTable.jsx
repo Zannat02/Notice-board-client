@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useRevalidator } from 'react-router';
 import Swal from 'sweetalert2';
 import API_URL from '../config';
+import NoticeDetailsModal from './NoticeDetailsModal';
 
 const statusClass = (status) =>
     status === 'Published'
@@ -12,6 +13,10 @@ const NoticeTable = ({ notices }) => {
     const navigate = useNavigate();
     const revalidator = useRevalidator();
     const [busyId, setBusyId] = useState(null);
+    const [selectedId, setSelectedId] = useState(null);
+
+    // Look the notice up by id, so the modal closes by itself if the notice is deleted
+    const selectedNotice = notices.find((notice) => notice._id === selectedId) || null;
 
     const handleEdit = (id) => navigate(`/notice-board/${id}`);
 
@@ -98,7 +103,7 @@ const NoticeTable = ({ notices }) => {
                         type="button"
                         disabled={busy}
                         onClick={() => handlePublish(notice)}
-                        className="px-2 py-1 bg-green-600 text-white rounded text-sm whitespace-nowrap disabled:opacity-50"
+                        className="px-3 py-1.5 bg-green-600 text-white rounded text-sm whitespace-nowrap disabled:opacity-50"
                     >
                         Publish
                     </button>
@@ -106,8 +111,16 @@ const NoticeTable = ({ notices }) => {
                 <button
                     type="button"
                     disabled={busy}
+                    onClick={() => setSelectedId(notice._id)}
+                    className="px-3 py-1.5 bg-gray-100 text-gray-800 border border-gray-300 rounded text-sm whitespace-nowrap disabled:opacity-50"
+                >
+                    View
+                </button>
+                <button
+                    type="button"
+                    disabled={busy}
                     onClick={() => handleEdit(notice._id)}
-                    className="px-2 py-1 bg-blue-500 text-white rounded text-sm whitespace-nowrap disabled:opacity-50"
+                    className="px-3 py-1.5 bg-blue-500 text-white rounded text-sm whitespace-nowrap disabled:opacity-50"
                 >
                     Edit
                 </button>
@@ -115,7 +128,7 @@ const NoticeTable = ({ notices }) => {
                     type="button"
                     disabled={busy}
                     onClick={() => handleDelete(notice)}
-                    className="px-2 py-1 bg-red-500 text-white rounded text-sm whitespace-nowrap disabled:opacity-50"
+                    className="px-3 py-1.5 bg-red-500 text-white rounded text-sm whitespace-nowrap disabled:opacity-50"
                 >
                     Delete
                 </button>
@@ -144,7 +157,16 @@ const NoticeTable = ({ notices }) => {
                         {notices.map((notice, index) => (
                             <tr key={notice._id}>
                                 <th>{index + 1}</th>
-                                <td className="max-w-[200px] truncate">{notice.NoticeTitle}</td>
+                                <td>
+                                    <button
+                                        type="button"
+                                        onClick={() => setSelectedId(notice._id)}
+                                        title="View notice details"
+                                        className="block max-w-[200px] truncate text-left font-medium text-blue-700 hover:underline"
+                                    >
+                                        {notice.NoticeTitle}
+                                    </button>
+                                </td>
                                 <td>{notice.NoticeType || notice['Notice Type']}</td>
                                 <td>{notice.Target}</td>
                                 <td>{notice.PublishDate}</td>
@@ -171,7 +193,14 @@ const NoticeTable = ({ notices }) => {
                     >
                         <div className="flex justify-between items-start gap-2 mb-2">
                             <h3 className="font-semibold text-gray-800 min-w-0 break-words">
-                                {index + 1}. {notice.NoticeTitle}
+                                {index + 1}.{' '}
+                                <button
+                                    type="button"
+                                    onClick={() => setSelectedId(notice._id)}
+                                    className="text-left text-blue-700 hover:underline"
+                                >
+                                    {notice.NoticeTitle}
+                                </button>
                             </h3>
                             <span
                                 className={`shrink-0 px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap ${statusClass(notice.status)}`}
@@ -199,6 +228,12 @@ const NoticeTable = ({ notices }) => {
                     </div>
                 ))}
             </div>
+
+            <NoticeDetailsModal
+                notice={selectedNotice}
+                onClose={() => setSelectedId(null)}
+                onEdit={(notice) => handleEdit(notice._id)}
+            />
 
         </div>
     );
