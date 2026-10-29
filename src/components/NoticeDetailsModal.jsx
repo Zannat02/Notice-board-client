@@ -31,7 +31,7 @@ const NoticeDetailsModal = ({ notice, onClose, onEdit }) => {
     const onCloseRef = useRef(onClose);
     const isOpen = Boolean(notice);
 
-    // Always call the latest onClose without re-running the effect below
+    
     useEffect(() => {
         onCloseRef.current = onClose;
     });
@@ -44,7 +44,7 @@ const NoticeDetailsModal = ({ notice, onClose, onEdit }) => {
         };
         document.addEventListener('keydown', handleKey);
 
-        // Stop the page behind the modal from scrolling
+      
         const previousOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
         closeButtonRef.current?.focus();
@@ -69,17 +69,17 @@ const NoticeDetailsModal = ({ notice, onClose, onEdit }) => {
 
     return (
         <div
-            className="fixed inset-0 z-[60] flex items-end justify-center bg-black/50 sm:items-center sm:p-4"
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4"
             onClick={(event) => {
                 if (event.target === event.currentTarget) onClose();
             }}
         >
-            {/* Bottom sheet on phones, centered dialog on tablet and desktop */}
+       {/* Centered dialog on every screen size, with an equal gap on both sides */}
             <div
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="notice-details-title"
-                className="flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-2xl bg-white shadow-xl sm:max-h-[85dvh] sm:max-w-2xl sm:rounded-2xl"
+                className="flex max-h-[calc(100dvh-2rem)] w-full max-w-2xl flex-col overflow-hidden rounded-2xl bg-white shadow-xl"
             >
                 {/* Header */}
                 <div className="flex items-start justify-between gap-3 border-b border-gray-200 p-4 sm:p-6">
@@ -150,8 +150,8 @@ const NoticeDetailsModal = ({ notice, onClose, onEdit }) => {
                     )}
                 </div>
 
-                {/* Footer */}
-                <div className="flex flex-col-reverse gap-2 border-t border-gray-200 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:flex-row sm:justify-end sm:p-6">
+            
+                <div className="flex flex-col-reverse gap-2 border-t border-gray-200 p-4 sm:flex-row sm:justify-end sm:p-6">
                     <button
                         type="button"
                         onClick={onClose}
