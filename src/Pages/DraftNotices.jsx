@@ -4,10 +4,9 @@ import { FiChevronLeft } from 'react-icons/fi';
 import NoticeTable from '../components/NoticeTable';
 
 const DraftNotices = () => {
-    const notices = useLoaderData();
+    // The loader in main.jsx already fetches only drafts (?status=Unpublished)
+    const draftNotices = useLoaderData();
     const navigate = useNavigate();
-
-    const draftNotices = notices.filter(notice => notice.status === 'Unpublished');
 
     return (
         <div className='-mb-10 p-3 md:p-6'>
